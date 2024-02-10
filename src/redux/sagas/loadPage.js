@@ -4,9 +4,10 @@ import { put, takeLatest, delay } from 'redux-saga/effects';
 import { setUser, setLoading } from '../reducers/configuration';
 import { setOpen } from '../reducers/versioningSystem';
 function* stopLoadingSaga() {
+    const randomDelay = Math.random() * 3000
     yield put(setLoading({ state: true, message: 'Versioning System Loading...' }));
     // Delay for 2 seconds
-    yield delay(2000);
+    yield delay(1);
     yield put(setLoading({ state: false, message: '' }));
     yield put(setOpen(true));
 }

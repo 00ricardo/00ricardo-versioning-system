@@ -11,10 +11,10 @@ function* versioningSystemSaga() {
         ... logic here ...
         */
         // Delay for 2 seconds
-        yield delay(3000);
+        yield delay(1);
         yield put(setLoading({ state: true, message: 'Preparing Resolution Environment...' }))
 
-        yield delay(4000);
+        yield delay(1);
         yield put(setLoading({ state: false, message: '' }));
         yield put(setAppStatus('PREVIEW'));
     } else if (app_status === 'PREVIEW') {

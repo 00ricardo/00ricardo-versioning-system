@@ -56,3 +56,29 @@ body {
     -webkit-text-decoration: none !important;
     text-decoration: none !important;
 }
+
+.pulse-warning {
+    color: var(--old-gold);
+    transform: scale(1);
+    animation: pulse 2s infinite;
+    border-radius: 100%;
+    background: #e2c04413;
+}
+
+
+@keyframes pulse {
+    0% {
+        transform: scale(0.7);
+        box-shadow: 0 0 0 0 var(#e2c0443f);
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px #e2c04413;
+    }
+
+    100% {
+        transform: scale(0.7);
+        box-shadow: 0 0 0 0 #e2c0443f;
+    }
+}
