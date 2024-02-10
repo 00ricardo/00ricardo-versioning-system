@@ -1,0 +1,58 @@
+:root {
+    --white: #fff;
+    --charcoal: #2E5266;
+    --state-gray: #6E8898;
+    --cadet-gray: #9FB1BC;
+    --timberwolf: #D3D0CB;
+    --old-gold: #E2C044;
+    --old-red: #e26744;
+    --fresh-green: #73ff73;
+
+}
+
+body {
+    background-color: var(--charcoal) !important;
+}
+
+.discard-btn {
+    color: var(--old-gold) !important;
+    border-color: var(--old-gold) !important;
+}
+
+.discard-btn:disabled {
+    color: #c3c3c38a !important;
+    border-color: #9390868a !important;
+}
+
+.discard-btn:hover {
+    background-color: #e2c0443b !important;
+}
+
+.save-btn {
+    color: var(--fresh-green) !important;
+    border-color: var(--fresh-green) !important;
+}
+
+.save-btn:disabled {
+    color: #c3c3c38a !important;
+    border-color: #9390868a !important;
+}
+
+.save-btn:hover {
+    background-color: #73ff7329 !important;
+}
+
+.chip-file {
+    color: var(--charcoal) !important;
+    background-color: var(--old-gold) !important;
+}
+
+.chip-file:hover {
+    color: var(--charcoal) !important;
+    background-color: var(--old-red) !important;
+}
+
+.css-1rootkg-code-fold a {
+    -webkit-text-decoration: none !important;
+    text-decoration: none !important;
+}
