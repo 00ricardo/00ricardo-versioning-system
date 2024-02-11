@@ -49,12 +49,13 @@ const a = 999
 const b = 10
 const a = 10
 
-const c = () => console.log('ams-osram')
+const c = () => console.log('tpon')
 
 if(a > 10) {console.log('bar')}
 console.log('done')
 console.log('done')
 console.log('abc')
+console.log('hehe')
 `) //! comparisson method
     const [localData, setLocalData] = useState(
         `
@@ -67,7 +68,9 @@ const c = () => {
 console.log('dbri')
 }
 
-if(a > 10) {console.log('bar')}
+if(a > 10) {
+    console.log('bar')
+}
 console.log('done')
 console.log('done')
 console.log('abc')
@@ -83,9 +86,7 @@ console.log('abc')
     const changeMethod = (m) => { setMethod(m) }
 
     const rowIsConflicted = (row) => {
-        let str = row.replaceAll('L-', '')
-        str = str.replaceAll('R-', '')
-        return conflictedData.includes(str)
+        return conflictedData.includes(row)
     }
     const handleClick = (decision) => {
         const tableElement = modifiedTableElement //document.querySelector('.css-31yr27-diff-container');
@@ -98,14 +99,10 @@ console.log('abc')
             case 'ACCEPT_REMOTE':
                 const remoteChanges = overrideContent(tableElement, selectedRow);
                 setLocalData(remoteChanges.trim())
-                //console.log("Accepting remote changes...")
-                //console.log(remoteChanges)
                 break;
             case 'ACCEPT_LOCAL':
                 const localChanges = overrideContent(tableElement, selectedRow);
                 setRemoteData(localChanges)
-                //console.log("Accepting local changes...")
-                //console.log(localChanges)
                 break;
             case 'CANCEL':
                 console.log("Canceling...")
@@ -114,31 +111,34 @@ console.log('abc')
                 break;
         }
         setSelectedRow('')
-        //setChangesDraft(changes)
     };
 
     useEffect(() => {
-        const conflictsRowReference = document.getElementsByClassName('css-1f721e2-gutter')
+        const lineNumberRef = document.getElementsByClassName('css-spajxp-line-number')
         let lines = []
-        Array.from(conflictsRowReference).forEach(row => {
-            if (row.classList.length === 2) {
-                if (rutils.hasValue(row.innerText)) lines.push(row.innerText)
-            }
+        Array.from(lineNumberRef).forEach(row => {
+            const parentClasses = row.parentNode.classList
+            let conflictedLine = ''
+            if (parentClasses.contains('css-xug0f4-diff-added')) {
+                if (rutils.hasValue(row.innerText)) conflictedLine = `R-${row.innerText}`
+            } else if (parentClasses.contains("css-19yygrn-diff-removed")) conflictedLine = `L-${row.innerText}`
+            lines.push(conflictedLine)
         });
 
         dispatch(setNumberOfConflicts(lines.size))
-        const cleanConflicts = rutils.getUniqueValues(lines)
-        setConflictedData(cleanConflicts)
-        //console.log(cleanConflicts)
+        const cleanConflicts_phase1 = rutils.getUniqueValues(lines)
+        const cleanConflicts_phase2 = rutils.removeEmptyElements(cleanConflicts_phase1)
+        setConflictedData(cleanConflicts_phase2)
     }, [dispatch])
 
 
     const overrideContent = (tableElement, line) => {
         const lines = Array.from(tableElement.querySelectorAll('.css-1n7ec1i-line'));
         const lineNumberSelected = parseInt(line.split('-')[1]);
-        let overriddenContent = changesDraft;
+        let overriddenContent = '';
 
         lines.forEach((lineElement) => {
+            let contentForConcat = ''
             // * Common 
             const lineNumberElements = Array.from(lineElement.querySelectorAll('.css-spajxp-line-number'));
             const lineIterator = parseInt(lineNumberElements[0].textContent);
@@ -151,13 +151,14 @@ console.log('abc')
 
             console.log(`Line selected: ${lineNumberSelected}.\nL-${lineIterator} content: ${leftLineContent}\nR-${lineIterator} content: ${rightLineContent}`)
 
-            if (line.startsWith('L')) overriddenContent += lineNumberSelected === lineIterator ? leftLineContent : rightLineContent
-            if (line.startsWith('R')) overriddenContent += lineNumberSelected === lineIterator ? rightLineContent : leftLineContent
+            if (line.startsWith('L')) contentForConcat = lineNumberSelected === lineIterator ? leftLineContent : rightLineContent
+            else if (line.startsWith('R')) contentForConcat = lineNumberSelected === lineIterator ? rightLineContent : leftLineContent
 
-            overriddenContent += '\n'
+            console.log("Content for concact: ", contentForConcat)
+            console.log("lineNumberSelected === lineIterator", lineNumberSelected === lineIterator)
+            console.log("line.startsWith('R')", line.startsWith('R'))
+            overriddenContent += contentForConcat + '\n'
         });
-
-        console.log(overriddenContent)
         return overriddenContent
     };
 
@@ -187,7 +188,7 @@ console.log('abc')
         const lineNumberElements = Array.from(document.querySelectorAll('.css-spajxp-line-number'));
         let lineGutter = 1
         lineNumberElements.forEach((lineElement, idx) => {
-            lineElement.setAttribute('side', lineGutter % 2 !== 0 ? 'L' : 'R')
+            lineElement.setAttribute('side', idx % 2 !== 0 ? 'R' : 'L')
             lineElement.addEventListener('click', (event) => {
                 const side = event.target.attributes.side.value
                 const lineNr = event.target.lastChild.data
@@ -208,8 +209,8 @@ console.log('abc')
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
             <AppBar component="nav" style={{ backgroundColor: 'var(--charcoal)' }}>
-                <Toolbar style={{ gap: '1rem', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', color: conflictCounter > 0 ? 'var(--old-gold' : 'var(--fresh-green)' }}>
+                <Toolbar style={{ gap: '1rem', justifyContent: 'space-between', padding: '10px 25px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', color: conflictCounter > 0 ? 'var(--old-gold' : 'var(--fresh-green)', gap: '0.5rem' }}>
                         {conflictCounter > 0 ?
                             <>
                                 <WarningIcon fontSize='large' className='pulse-warning' />
@@ -251,7 +252,7 @@ console.log('abc')
                             </RadioGroup>
                         </FormControl>
                         {selectedRow && rowIsConflicted(selectedRow) ?
-                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', justifyContent: 'flex-end', paddingRight: '15px' }}>
                                 {selectedRow}
                                 <div style={{ display: 'flex', gap: '1rem' }}>
                                     <Chip style={{ color: '#fff' }} size='small' label={`Accept ${selectedRow.startsWith('L') ? 'remote' : 'local'} changes`} variant="outlined" onClick={() => handleClick('ACCEPT')} />

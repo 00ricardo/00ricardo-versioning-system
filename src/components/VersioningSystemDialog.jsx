@@ -52,7 +52,8 @@ function VersioningSystemDialog() {
                         maxWidth: '1065px',
                         minHeight: '300px',
                         maxHeight: '600px',
-                        height: '600px'
+                        height: '600px',
+                        width: '1000px'
                     }
                 }}
             >
