@@ -1,0 +1,60 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Alice Johnson",
+      "email": "alice.johnson@example.com",
+      "age": 28,
+      "isActive": true,
+      "address": {
+        "street": "123 Maple St",
+        "city": "Springfield",
+        "zip": "62704",
+        "coordinates": {
+          "lat": 39.7817,
+          "lng": -89.6501
+        }
+      },
+      "roles": ["admin", "editor"],
+      "orders": [
+        {
+          "orderId": "A100",
+          "date": "2026-01-10",
+          "items": [
+            { "product": "Laptop", "quantity": 1, "price": 1200.5 },
+            { "product": "Mouse", "quantity": 2, "price": 25.75 }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Bob Smith",
+      "email": "bob.smith@example.com",
+      "age": 34,
+      "isActive": false,
+      "address": {
+        "street": "456 Oak Ave",
+        "city": "Greenville",
+        "zip": "29601",
+        "coordinates": {
+          "lat": 34.8526,
+          "lng": -82.394
+        }
+      },
+      "roles": ["viewer"],
+      "orders": [
+        {
+          "orderId": "B200",
+          "date": "2026-01-12",
+          "items": [{ "product": "Keyboard", "quantity": 1, "price": 75.0 }]
+        },
+        {
+          "orderId": "B201",
+          "date": "2026-01-13",
+          "items": [{ "product": "Monitor", "quantity": 2, "price": 300.0 }]
+        }
+      ]
+    }
+  ]
+}
